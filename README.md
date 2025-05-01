@@ -1,2 +1,3 @@
-# n8n-project
-Local n8n config
+# n8n Project
+
+> Local n8n config
