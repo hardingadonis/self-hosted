@@ -4,7 +4,7 @@
 
 - Clone this repository to your local machine.
 
-- Create a `.env` file in the root directory of the project.
+- Create a `.env` file in the `n8n` directory of the project.
 
 - Fill `.env` with the following variables:
 
