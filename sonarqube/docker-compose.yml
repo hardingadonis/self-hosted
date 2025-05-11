@@ -9,7 +9,7 @@ services:
       - sonarqube_extensions:/opt/sonarqube/extensions
     networks:
       - sonarqube-network
-  
+
   proxy:
     image: nginx:stable-alpine
     container_name: sonarqube-proxy
