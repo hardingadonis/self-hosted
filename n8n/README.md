@@ -40,4 +40,24 @@ This guide will help you set up n8n (a workflow automation tool) using Docker fo
 
 ### Backup data from Docker volume
 
+- Step 1: Run backup command
+
+  ```bash
+  docker run --rm --volumes-from <container-id> -v ${PWD}:/backup busybox tar cvfz /backup/backup-n8n.tar.gz /home/node/.n8n
+  ```
+
+  Replace <container-id> with a specific Docker container ID.
+
+- Step 2: Store the newly created backup file `backup-n8n.tar.gz` wherever you want
+
 ### Restore data from Docker volume
+
+- Step 1: Prepare the `backup-n8n.tar.gz` file in the same folder as the terminal
+
+- Step 2: Run restore command
+
+  ```bash
+  docker run --rm --volumes-from <container-id> -v $(PWD):/backup busybox sh -c "cd /home/node/.n8n && tar xvfz /backup/backup-n8n.tar.gz --strip 1"
+  ```
+
+  Replace <container-id> with a specific Docker container ID.
