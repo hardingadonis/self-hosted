@@ -11,6 +11,16 @@ services:
     networks:
       - common_network
 
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run --token ${CF_TUNNEL_TOKEN}
+    env_file:
+      - .env
+    networks:
+      - common_network
+
 volumes:
   portainer_data:
 
