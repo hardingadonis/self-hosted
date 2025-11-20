@@ -17,3 +17,5 @@ volumes:
 networks:
   portainer_network:
     driver: bridge
+
+name: portainer
