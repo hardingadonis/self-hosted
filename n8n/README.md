@@ -1,9 +1,10 @@
 # n8n Self-Hosted Setup with Docker
 
-This guide will help you set up n8n (a workflow automation tool) using Docker for self-hosting.
+> ♾️ This guide will help you set up n8n (a workflow automation tool) using Docker for self-hosting.
 
 ## Table of Contents
 
+- [Environment](#environment)
 - [Installation](#installation)
 - [Backup and Restore](#backup-and-restore)
   - [Backup data from Docker volume](#backup-data-from-docker-volume)
@@ -11,24 +12,40 @@ This guide will help you set up n8n (a workflow automation tool) using Docker fo
 
 ---
 
+## Environment
+
+| #   | Name              | Sample value                | Description                                 |
+| --- | ----------------- | --------------------------- | ------------------------------------------- |
+| 1   | POSTGRES_USER     | n8n-user                    | Username for the PostgreSQL database        |
+| 2   | POSTGRES_PASSWORD | n8n-password                | Password for the PostgreSQL database        |
+| 3   | POSTGRES_DB       | n8n-database                | Name of the PostgreSQL database             |
+| 4   | ENCRYPTION_KEY    | xxxxyyyzzz                  | Encryption key for the n8n client & workers |
+| 5   | BASE_URL          | https://n8n.your-domain.com | The domain where n8n is hosted              |
+
 ## Installation
 
-- Step 1: Pull stable version
+- Step 1: Create `.env` file
 
   ```bash
-  docker pull n8nio/n8n:stable
+  cp .env.example .env
   ```
 
-- Step 2: Create a volume
+  Then open the `.env` file and configure all required environment variables.
+
+- Step 2: Start the Docker Compose stack
 
   ```bash
-  docker volume create n8n_data
+  docker compose up -d
   ```
 
-- Step 3: Create new container
+- (Optional) Scale the number of workers
+
+  If you want to run multiple workers to handle more executions, use the following command.
+
+  Replace `3` with any number of workers you need:
 
   ```bash
-  docker run -d -v n8n_data:/home/node/.n8n -p 5678:5678 n8nio/n8n:stable
+  docker compose up -d --scale worker=3
   ```
 
 - Read more from [n8n documents](https://docs.n8n.io/hosting/installation/docker/).
