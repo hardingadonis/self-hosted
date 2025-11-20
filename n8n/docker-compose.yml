@@ -1,0 +1,75 @@
+x-shared: &shared
+  restart: always
+  image: n8nio/n8n:stable
+  environment:
+    - GENERIC_TIMEZONE=Asia/Ho_Chi_Minh
+    - TZ=Asia/Ho_Chi_Minh
+    - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+    - N8N_RUNNERS_ENABLED=true
+    - OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS=true
+    - N8N_BLOCK_ENV_ACCESS_IN_NODE=true
+    - N8N_GIT_NODE_DISABLE_BARE_REPOS=true
+    - DB_TYPE=postgresdb
+    - DB_POSTGRESDB_HOST=database
+    - DB_POSTGRESDB_PORT=5432
+    - DB_POSTGRESDB_DATABASE=${POSTGRES_DB}
+    - DB_POSTGRESDB_USER=${POSTGRES_USER}
+    - DB_POSTGRESDB_PASSWORD=${POSTGRES_PASSWORD}
+    - EXECUTIONS_MODE=queue
+    - QUEUE_BULL_REDIS_HOST=queue
+    - N8N_ENCRYPTION_KEY=${ENCRYPTION_KEY}
+    - N8N_EDITOR_BASE_URL=${BASE_URL}
+    - WEBHOOK_URL=${BASE_URL}
+  volumes:
+    - n8n_data:/home/node/.n8n
+  depends_on:
+    - queue
+    - database
+  networks:
+    - n8n_network
+
+services:
+  client:
+    <<: *shared
+    container_name: client
+    ports:
+      - 5678:5678
+  
+  worker:
+    <<: *shared
+    command: worker
+ 
+  database:
+    image: postgres:16
+    container_name: database
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - n8n_network
+
+  queue:
+    image: redis:8
+    container_name: queue
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    networks:
+      - n8n_network
+
+volumes:
+  n8n_data:
+  postgres_data:
+  redis_data:
+
+networks:
+  n8n_network:
+    driver: bridge
+
+name: n8n
