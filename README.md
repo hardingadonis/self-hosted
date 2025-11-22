@@ -1,6 +1,11 @@
 # Self Hosted
 
-> 📡 My configurations for hosted services
+> 📡 My configurations for self-hosted services
+
+## Requirement
+
+- You must complete the setup for `cloudflare` before configuring any of the services below.
+- Reference: [cloudflare](./cloudflare/README.md)
 
 ## My services
 
