@@ -3,13 +3,32 @@ services:
     image: portainer/portainer-ce:latest
     container_name: portainer
     restart: unless-stopped
-    ports:
-      - 9000:9000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
+    labels:
+      - docker-volume-backup.stop-during-backup=true
     networks:
       - portainer_network
+      - cloudflare_network
+  
+  backup:
+    image: ghcr.io/offen/docker-volume-backup:v2.46.1@sha256:039188f012d26178e68a0bb906cd408b9fc197069e8076d03014a31a5fed1406
+    container_name: backup
+    restart: always
+    environment:
+      - BACKUP_RETENTION_DAYS=7
+      - BACKUP_CRON_EXPRESSION=0 3 * * *
+      - BACKUP_FILENAME=backup-portainer-%Y-%m-%dT%H-%M-%S.tar.gz
+      - AWS_ENDPOINT=${AWS_ENDPOINT}
+      - AWS_S3_BUCKET_NAME=${AWS_S3_BUCKET_NAME}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    volumes:
+      - portainer_data:/backup/portainer_data:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
 
 volumes:
   portainer_data:
@@ -17,5 +36,7 @@ volumes:
 networks:
   portainer_network:
     driver: bridge
+  cloudflare_network:
+    external: true
 
 name: portainer
