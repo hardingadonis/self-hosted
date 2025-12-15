@@ -6,21 +6,23 @@
 
 - [Environment](#environment)
 - [Installation](#installation)
-- [Backup and Restore](#backup-and-restore)
-  - [Backup data from Docker volume](#backup-data-from-docker-volume)
-  - [Restore data from Docker volume](#restore-data-from-docker-volume)
+- [Backup Configuration](#backup-configuration)
 
 ---
 
 ## Environment
 
-| #   | Name              | Sample value                | Description                                 |
-| --- | ----------------- | --------------------------- | ------------------------------------------- |
-| 1   | POSTGRES_USER     | n8n-user                    | Username for the PostgreSQL database        |
-| 2   | POSTGRES_PASSWORD | n8n-password                | Password for the PostgreSQL database        |
-| 3   | POSTGRES_DB       | n8n-database                | Name of the PostgreSQL database             |
-| 4   | ENCRYPTION_KEY    | xxxxyyyzzz                  | Encryption key for the n8n client & workers |
-| 5   | BASE_URL          | https://n8n.your-domain.com | The domain where n8n is hosted              |
+| #   | Name                  | Sample value                             | Description                                 |
+| --- | --------------------- | ---------------------------------------- | ------------------------------------------- |
+| 1   | POSTGRES_USER         | n8n-user                                 | Username for the PostgreSQL database        |
+| 2   | POSTGRES_PASSWORD     | n8n-password                             | Password for the PostgreSQL database        |
+| 3   | POSTGRES_DB           | n8n-database                             | Name of the PostgreSQL database             |
+| 4   | ENCRYPTION_KEY        | xxxxyyyzzz                               | Encryption key for the n8n client & workers |
+| 5   | BASE_URL              | https://n8n.your-domain.com              | The domain where n8n is hosted              |
+| 6   | AWS_ENDPOINT          | s3.amazonaws.com                         | S3-compatible endpoint for backup storage   |
+| 7   | AWS_S3_BUCKET_NAME    | n8n-backups                              | Name of the S3 bucket for storing backups   |
+| 8   | AWS_ACCESS_KEY_ID     | AKIAIOSFODNN7EXAMPLE                     | Access key ID for S3 authentication         |
+| 9   | AWS_SECRET_ACCESS_KEY | wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY | Secret access key for S3 authentication     |
 
 ## Installation
 
@@ -48,33 +50,21 @@
   docker compose up -d --scale worker=3
   ```
 
-- Read more from [n8n documents](https://docs.n8n.io/hosting/installation/docker/).
+## Backup Configuration
 
-## Backup and Restore
+This setup includes automatic backup functionality using `docker-volume-backup`:
 
-- Read more from [Docker documents](https://docs.docker.com/engine/storage/volumes/#back-up-restore-or-migrate-data-volumes).
-- Watch more from [YouTube](https://youtu.be/ZEy8iFbgbPA).
+- **Backup Schedule**: Daily at 2:00 AM (configurable via `BACKUP_CRON_EXPRESSION`)
+- **Retention**: 7 days (configurable via `BACKUP_RETENTION_DAYS`)
+- **Storage**: S3-compatible storage (AWS S3, MinIO, Cloudflare R2, etc.)
+- **Backup Volumes**:
+  - `/backup/n8n_data` - n8n application data
+  - `/backup/postgres_data` - PostgreSQL database
+  - `/backup/redis_data` - Redis queue data
 
-### Backup data from Docker volume
+The backup service automatically:
 
-- Step 1: Run backup command
-
-  ```bash
-  docker run --rm --volumes-from <container-id> -v ${PWD}:/backup busybox tar cvfz /backup/backup-n8n.tar.gz /home/node/.n8n
-  ```
-
-  Replace <container-id> with a specific Docker container ID.
-
-- Step 2: Store the newly created backup file `backup-n8n.tar.gz` wherever you want
-
-### Restore data from Docker volume
-
-- Step 1: Prepare the `backup-n8n.tar.gz` file in the same folder as the terminal
-
-- Step 2: Run restore command
-
-  ```bash
-  docker run --rm --volumes-from <container-id> -v $(PWD):/backup busybox sh -c "cd /home/node/.n8n && tar xvfz /backup/backup-n8n.tar.gz --strip 1"
-  ```
-
-  Replace <container-id> with a specific Docker container ID.
+- Stops all services during backup (via `docker-volume-backup.stop-during-backup` label)
+- Creates compressed backup files with timestamp
+- Uploads to S3 bucket
+- Removes backups older than retention period
