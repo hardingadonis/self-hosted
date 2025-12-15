@@ -1,7 +1,7 @@
 services:
-  portainer:
+  portainer-client:
     image: portainer/portainer-ce:latest
-    container_name: portainer
+    container_name: portainer-client
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -12,7 +12,7 @@ services:
       - portainer_network
       - cloudflare_network
   
-  backup:
+  portainer-backup:
     image: ghcr.io/offen/docker-volume-backup:v2.46.1@sha256:039188f012d26178e68a0bb906cd408b9fc197069e8076d03014a31a5fed1406
     container_name: portainer-backup
     restart: always
