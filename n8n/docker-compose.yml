@@ -25,8 +25,8 @@ x-shared: &shared
   labels:
     - docker-volume-backup.stop-during-backup=true
   depends_on:
-    - queue
-    - database
+    - n8n-queue
+    - n8n-database
 
 services:
   n8n-client:
