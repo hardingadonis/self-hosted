@@ -36,7 +36,7 @@ services:
       - n8n_network
       - cloudflare_network
   
-  worker:
+  n8n-worker:
     <<: *shared
     command: worker
     networks:
