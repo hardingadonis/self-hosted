@@ -47,7 +47,7 @@
   Replace `3` with any number of workers you need:
 
   ```bash
-  docker compose up -d --scale worker=3
+  docker compose up -d --scale n8n-worker=3
   ```
 
 ## Backup Configuration
