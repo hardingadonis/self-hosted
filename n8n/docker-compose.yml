@@ -1,5 +1,5 @@
 x-shared: &shared
-  restart: always
+  restart: unless-stopped
   image: n8nio/n8n:stable
   environment:
     - GENERIC_TIMEZONE=Asia/Ho_Chi_Minh
