@@ -17,10 +17,10 @@
 | 1   | POSTGRES_USER         | sonarqube-user                           | Username for the PostgreSQL database      |
 | 2   | POSTGRES_PASSWORD     | sonarqube-password                       | Password for the PostgreSQL database      |
 | 3   | POSTGRES_DB           | sonarqube-database                       | Name of the PostgreSQL database           |
-| 6   | AWS_ENDPOINT          | s3.amazonaws.com                         | S3-compatible endpoint for backup storage |
-| 7   | AWS_S3_BUCKET_NAME    | sonarqube-backups                        | Name of the S3 bucket for storing backups |
-| 8   | AWS_ACCESS_KEY_ID     | AKIAIOSFODNN7EXAMPLE                     | Access key ID for S3 authentication       |
-| 9   | AWS_SECRET_ACCESS_KEY | wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY | Secret access key for S3 authentication   |
+| 4   | AWS_ENDPOINT          | s3.amazonaws.com                         | S3-compatible endpoint for backup storage |
+| 5   | AWS_S3_BUCKET_NAME    | sonarqube-backups                        | Name of the S3 bucket for storing backups |
+| 6   | AWS_ACCESS_KEY_ID     | AKIAIOSFODNN7EXAMPLE                     | Access key ID for S3 authentication       |
+| 7   | AWS_SECRET_ACCESS_KEY | wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY | Secret access key for S3 authentication   |
 
 ## Installation
 
