@@ -52,8 +52,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-    networks:
-      - sonarqube_network
 
 volumes:
   sonarqube_data:
