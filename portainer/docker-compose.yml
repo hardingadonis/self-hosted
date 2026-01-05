@@ -28,11 +28,15 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+    networks:
+      - portainer_network
 
 volumes:
   portainer_data:
 
 networks:
+  portainer_network:
+    driver: bridge
   cloudflare_network:
     external: true
 
