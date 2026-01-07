@@ -44,7 +44,7 @@ services:
       - n8n_network
  
   n8n-database:
-    image: postgres:16
+    image: postgres:17.7-trixie@sha256:02412c97872f2d77e96b6a91a2344ae8263ab647c0998c4e3311053e3a19ef33
     container_name: n8n-database
     restart: unless-stopped
     environment:
@@ -59,7 +59,7 @@ services:
       - n8n_network
 
   n8n-queue:
-    image: redis:8
+    image: redis:8.4.0-bookworm@sha256:296da4db77a292237e601d0902e5162edeb1c58db54b5a0d82b8ccb2bbc3de41
     container_name: n8n-queue
     restart: unless-stopped
     volumes:

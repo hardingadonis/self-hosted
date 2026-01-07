@@ -1,6 +1,6 @@
 services:
   sonarqube-client:
-    image: sonarqube:community
+    image: sonarqube:26.1.0.118079-community@sha256:90c9de0f2d5609c696aae213ed6ea3c347eeb6d851a552d6f08922aeda28bed6
     container_name: sonarqube-client
     restart: unless-stopped
     environment:
@@ -21,7 +21,7 @@ services:
       - cloudflare_network
   
   sonarqube-database:
-    image: postgres:17
+    image: postgres:17.7-trixie@sha256:02412c97872f2d77e96b6a91a2344ae8263ab647c0998c4e3311053e3a19ef33
     container_name: sonarqube-database
     restart: unless-stopped
     environment:

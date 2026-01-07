@@ -1,6 +1,6 @@
 services:
   portainer-client:
-    image: portainer/portainer-ce:latest
+    image: portainer/portainer-ce:2.33.6@sha256:6f880b88fd50f1e79572273b463aea36f28b307d14b6a5a31e702cc7916a8423
     container_name: portainer-client
     restart: unless-stopped
     volumes:
