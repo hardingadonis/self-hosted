@@ -42,8 +42,8 @@
 
 This setup includes automatic backup functionality using `docker-volume-backup`:
 
-- **Backup Schedule**: Daily at 3:00 AM (configurable via `BACKUP_CRON_EXPRESSION`)
-- **Retention**: 7 days (configurable via `BACKUP_RETENTION_DAYS`)
+- **Backup Schedule**: Daily at 2:20 AM (configurable via `BACKUP_CRON_EXPRESSION`)
+- **Retention**: 3 days (configurable via `BACKUP_RETENTION_DAYS`)
 - **Storage**: S3-compatible storage (AWS S3, MinIO, Cloudflare R2, etc.)
 - **Backup Volumes**:
   - `/backup/sonarqube_data` - SonarQube application data

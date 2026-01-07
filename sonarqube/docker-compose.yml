@@ -10,6 +10,8 @@ services:
     volumes:
       - sonarqube_data:/opt/sonarqube/data
       - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_temp:/opt/sonarqube/temp
+      - sonarqube_logs:/opt/sonarqube/logs
     labels:
       - docker-volume-backup.stop-during-backup=true
     depends_on:
@@ -38,8 +40,8 @@ services:
     container_name: sonarqube-backup
     restart: always
     environment:
-      - BACKUP_RETENTION_DAYS=7
-      - BACKUP_CRON_EXPRESSION=0 3 * * *
+      - BACKUP_RETENTION_DAYS=3
+      - BACKUP_CRON_EXPRESSION=20 2 * * *
       - BACKUP_FILENAME=backup-sonarqube-%Y-%m-%dT%H-%M-%S.tar.gz
       - AWS_ENDPOINT=${AWS_ENDPOINT}
       - AWS_S3_BUCKET_NAME=${AWS_S3_BUCKET_NAME}
@@ -48,7 +50,7 @@ services:
     volumes:
       - sonarqube_data:/backup/sonarqube_data:ro
       - sonarqube_extensions:/backup/sonarqube_extensions:ro
-      - postgres_data:/backup/postgres_data:ro
+      - sonarqube_postgres_data:/backup/sonarqube_postgres_data:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
@@ -57,8 +59,20 @@ services:
 
 volumes:
   sonarqube_data:
+    name: sonarqube_data
+    driver: local
   sonarqube_extensions:
-  postgres_data:
+    name: sonarqube_extensions
+    driver: local
+  sonarqube_temp:
+    name: sonarqube_temp
+    driver: local
+  sonarqube_logs:
+    name: sonarqube_logs
+    driver: local
+  sonarqube_postgres_data:
+    name: sonarqube_postgres_data
+    driver: local
 
 networks:
   sonarqube_network:

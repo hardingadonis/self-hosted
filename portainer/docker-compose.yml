@@ -16,8 +16,8 @@ services:
     container_name: portainer-backup
     restart: always
     environment:
-      - BACKUP_RETENTION_DAYS=7
-      - BACKUP_CRON_EXPRESSION=0 3 * * *
+      - BACKUP_RETENTION_DAYS=3
+      - BACKUP_CRON_EXPRESSION=0 2 * * *
       - BACKUP_FILENAME=backup-portainer-%Y-%m-%dT%H-%M-%S.tar.gz
       - AWS_ENDPOINT=${AWS_ENDPOINT}
       - AWS_S3_BUCKET_NAME=${AWS_S3_BUCKET_NAME}
@@ -33,9 +33,12 @@ services:
 
 volumes:
   portainer_data:
+    name: portainer_data
+    driver: local
 
 networks:
   portainer_network:
+    name: portainer_network
     driver: bridge
   cloudflare_network:
     external: true
