@@ -19,7 +19,7 @@ services:
     networks:
       - sonarqube_network
       - cloudflare_network
-  
+
   sonarqube-database:
     image: postgres:17.7-trixie@sha256:02412c97872f2d77e96b6a91a2344ae8263ab647c0998c4e3311053e3a19ef33
     container_name: sonarqube-database
@@ -34,7 +34,7 @@ services:
       - docker-volume-backup.stop-during-backup=true
     networks:
       - sonarqube_network
-  
+
   sonarqube-backup:
     image: ghcr.io/offen/docker-volume-backup:v2.46.1@sha256:039188f012d26178e68a0bb906cd408b9fc197069e8076d03014a31a5fed1406
     container_name: sonarqube-backup

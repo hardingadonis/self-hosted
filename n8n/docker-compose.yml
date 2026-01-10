@@ -36,13 +36,13 @@ services:
     networks:
       - n8n_network
       - cloudflare_network
-  
+
   n8n-worker:
     <<: *shared
     command: worker
     networks:
       - n8n_network
-  
+
   n8n-database:
     image: postgres:17.7-trixie@sha256:02412c97872f2d77e96b6a91a2344ae8263ab647c0998c4e3311053e3a19ef33
     container_name: n8n-database
@@ -57,7 +57,7 @@ services:
       - docker-volume-backup.stop-during-backup=true
     networks:
       - n8n_network
-  
+
   n8n-queue:
     image: redis:8.4.0-bookworm@sha256:296da4db77a292237e601d0902e5162edeb1c58db54b5a0d82b8ccb2bbc3de41
     container_name: n8n-queue
@@ -68,7 +68,7 @@ services:
       - docker-volume-backup.stop-during-backup=true
     networks:
       - n8n_network
-  
+
   n8n-backup:
     image: ghcr.io/offen/docker-volume-backup:v2.46.1@sha256:039188f012d26178e68a0bb906cd408b9fc197069e8076d03014a31a5fed1406
     container_name: n8n-backup
