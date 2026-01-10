@@ -29,7 +29,7 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - sonarqube_postgres_data:/var/lib/postgresql/data
     labels:
       - docker-volume-backup.stop-during-backup=true
     networks:
