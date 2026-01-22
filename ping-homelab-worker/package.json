@@ -1,0 +1,18 @@
+{
+	"name": "ping-homelab",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"deploy": "wrangler deploy",
+		"dev": "wrangler dev --test-scheduled",
+		"start": "wrangler dev --test-scheduled",
+		"cf-typegen": "wrangler types",
+		"format": "prettier --write \"src/**/*.ts\""
+	},
+	"devDependencies": {
+		"@trivago/prettier-plugin-sort-imports": "6.0.2",
+		"prettier": "3.8.0",
+		"typescript": "5.9.3",
+		"wrangler": "4.59.3"
+	}
+}
